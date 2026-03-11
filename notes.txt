@@ -18,3 +18,10 @@ Task #3
         ./build.sh --platform android --project-name ${$appName}
         To:
         ./build.sh --platform android --project-name $appName
+    2. I noticed a mismatch between expected platform and actual. According to build.sh:
+        Usage: $(basename "$0") --platform <Android|iOS> --project-name <name> [--version <version> --profile] 
+        - Notice that Android is capitalized here, so I'm going to update the .yaml accordingly.
+         Change:
+        ./build.sh --platform android --project-name $appName
+        To:
+        ./build.sh --platform Android --project-name $appName
