@@ -28,6 +28,14 @@ Task #3
         Usage: $(basename "$0") --platform <Android|iOS> --project-name <name> [--version <version> --profile] 
         - Notice that Android is capitalized here, so I'm going to update the .yaml accordingly.
          Change:
-        ./build.sh --platform android --project-name $appName
+        ./build.sh --platform android --project-name "$appName"
         To:
-        ./build.sh --platform Android --project-name $appName
+        ./build.sh --platform Android --project-name "$appName"
+
+    3. I encountered a permission issue with the running of build.sh.
+    If build.sh is lacking permission, I tried using chmod to change its permission before running it. upload.sh probably also lacks permission.
+    I added this step before the build step.
+    - name: Make scripts executable
+        run: |
+          chmod +x build.sh
+          chmod +x upload.sh
