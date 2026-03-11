@@ -20,6 +20,7 @@ Task #3
         ./build.sh --platform android --project-name $appName
 
         After testing, that wasn't the only issue. I looked up online for bash syntax and realized how spaces can be the cause of these sneaky issues.
+        Changes made:
         1. appName = "Test App" --> appName="Test App"
         2. ./build.sh --platform android --project-name $appName --> ./build.sh --platform android --project-name "$appName"
 
@@ -39,3 +40,51 @@ Task #3
         run: |
           chmod +x build.sh
           chmod +x upload.sh
+    
+    4. Great, now the build step seems to run without issues. Now there seems to be a syntax issue with the upload step.
+        Run ./upload.sh build/android"
+            ./upload.sh build/android"
+            shell: /usr/bin/bash -e {0}
+        /home/runner/work/_temp/34937757-808e-4edf-977b-6bc23e3466a7.sh: line 1: unexpected EOF while looking for matching `"'
+        Error: Process completed with exit code 2.
+        - According to upload.sh, here is the expected syntax:
+            - "usage: ./upload.sh <platform> <artifact path>"
+
+            Let's compare with what we have inside the .yaml file.
+            ./upload.sh build/android"
+
+            From this, we can see that the current line inside the .yaml script doesn't match the expected syntax. Below are the changes I've made.
+                A. I can see that there is a closing quotation mark but no opening. Let's update that.
+                    ./upload.sh build/android" --> ./upload.sh "build/android"
+                B. We need to specify the platform. According to upload.sh, platform should be in lowercase (e.g. android, ios)
+                    ./upload.sh "build/android" --> ./upload.sh android "build/android"
+                C. We want to make sure the artifact path is correct. 
+                    According to build.sh, the build directory should be: BUILD_DIR=build/$PLATFORM.
+                    Since we know that the working directory is in the cli folder, the build directory should be a folder within the cli folder.
+
+                    Visualization:
+                    root/
+                        .github/
+                        cli/
+                            build.sh
+                            upload.sh
+                            build/
+                                Android/
+                                    (.apk)
+                                    (.dat artifacts)
+                                    (.pro) if $PROFILE == "true"
+                                iOS/
+                                    (.ipa)
+                                    Assets/
+                                        (.asset artifacts)
+                                    (.pro) if $PROFILE == "true"
+
+                    One issue: upload.sh's <platform> expects lowercase, but build.sh's $PLATFORM expects something else.
+                    upload.sh: android, ios
+                    build.sh: Android, iOS
+
+                    With this in mind, we need to change the artifact path depending on if the platform is Android or iOS.
+                    if Android, artifact path is /build/Android
+                    if iOS, artifact path is /build/iOS
+
+                D. According to upload.sh, we need to provide an UPLOAD_TOKEN in the environment.
