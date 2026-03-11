@@ -1,1 +1,20 @@
-This file left intentionally blank as an example file for you to fill in with your notes
+Issues encountered:
+
+Task #3
+    1. After first workflow run:
+        Run appName = "Test App"
+        /home/runner/work/_temp/acac2dac-8e77-47a8-9d3a-3e1b00082d1d.sh: line 1: appName: command not found
+        Error: Process completed with exit code 127.
+        Workflow fails at Run Build stage. I'll take a look at the build.yaml file next.
+
+        Snippet of interest:
+        # CLI call to simulated build process
+        - name: Run Build
+            run: |
+            appName = "Test App"
+            ./build.sh --platform android --project-name ${$appName} # Syntax of ${$appName} looks off
+
+        Change:
+        ./build.sh --platform android --project-name ${$appName}
+        To:
+        ./build.sh --platform android --project-name $appName
