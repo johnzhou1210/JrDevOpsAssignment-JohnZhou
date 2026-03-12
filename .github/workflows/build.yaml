@@ -79,5 +79,6 @@ jobs:
               ./upload.sh ios "$file"
             elif [[ "$PLATFORM" == "Android" ]]; then
               ./upload.sh android "$file"
+            fi
           done
           echo "Upload process completed for all artifacts."
