@@ -32,7 +32,8 @@ jobs:
           source ../app.config
           echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
           echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
-          echo "Loaded app configuration: Name=${APP_NAME}, Version=${APP_VERSION}"
+          echo "PROFILE=${PROFILE}" >> $GITHUB_ENV
+          echo "Loaded app configuration: Name=${APP_NAME}, Version=${APP_VERSION}, Profile=${PROFILE}"
 
       # CLI call to make sure the build and upload scripts are executable
       - name: Make scripts executable
@@ -44,14 +45,9 @@ jobs:
       # CLI call to simulated build process
       - name: Run Build
         run: |
-          ./build.sh --platform Android --project-name "${APP_NAME}" --version "${APP_VERSION}"
+          PROFILE_FLAG=$([[ "$PROFILE" == "true" ]] && echo "--profile")
+          ./build.sh --platform Android --project-name "${APP_NAME}" --version "${APP_VERSION}" $PROFILE_FLAG
           echo "Build process completed."
-
-      # Debug step to show previous commit and app.config content for troubleshooting
-      - name: Debug previous commit file
-        run: |
-          git log --oneline -5
-          git show HEAD~1:app.config || echo "Previous commit file not found"
 
       # CLI call to simulated upload process
       # Modify later with an if statement to adjust flags based on platform
@@ -64,11 +60,14 @@ jobs:
           # PREV_VERSION will be an empty string if there is no previous version (first commit), so we will treat that as a version change and proceed with upload
 
           PREV_VERSION=$(git show HEAD~1:app.config 2>/dev/null | grep APP_VERSION | cut -d '"' -f2 || echo "")
+          PREV_PROFILE=$(git show HEAD~1:app.config 2>/dev/null | grep PROFILE | cut -d '=' -f2 || echo "")
           echo "Previous version: $PREV_VERSION"
+          echo "Previous profile: $PREV_PROFILE"
           echo "Current version: $APP_VERSION"
+          echo "Current profile: $PROFILE"
 
-          if [[ "$APP_VERSION" == "$PREV_VERSION" ]]; then
-            echo "Version has not changed, skipping upload."
+          if [[ "$APP_VERSION" == "$PREV_VERSION" && "$PROFILE" == "$PREV_PROFILE" ]]; then
+            echo "Version/Profile has not changed, skipping upload."
             exit 0
           fi
 

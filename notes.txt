@@ -113,4 +113,12 @@ Task #5
     4. Since this task suggested that the build should not always be deployed/uploaded after a build, my first instinct was to check on the CDN if the version exists there. However, since that isn't an option for this assignment since everything is simulated,
         One other approach is to only upload the artifacts if the app version in the latest commit is newer than the app version in the previous commit. However, for simplicity's sake, I decided to just use a string comparison for version checking, and only upload if
         the previous commit's app version is different from the current's app version.
-        - During this step, I encountered an issue where the previous version was defaulting to an empty string. I used AI assistance to help me diagnose the issue.
+        - During this step, I encountered an issue where the previous version was defaulting to an empty string. I used AI assistance to help me diagnose the issue. The issue was that git checkout only checked out a shallow clone, and HEAD~1 didn't exist inside the workflow runner.
+        - I needed to set the fetch depth to 0 during the Checkout repository step. Its default value is 1, which means that only the latest commit is fetched, which explains why git show couldn't retrieve the previous commit (HEAD~1).
+
+# Task 6
+    1. When I inspected build.sh from earlier, I noticed that build.sh takes an optional --profile flag. Additionally, the script simulates profiling if the profile flag exists, which is a huge hint for what this task wants me to do.
+        - For this task, I can simply pass in the --profile flag when building, so changes to the .yaml file are needed. However, I think it is a good idea to add an option in the app.config to allow or disallow profiling depending on the team's needs.
+    2. One dilemma from this task was to upload or not upload if the PROFILE variable in app.config changes value. For simplicity's sake, I decided to only skip uploading if both VERSION and PROFILE are unchanged from the last commit.
+        - This approach is simple, but I can see how this is unscalable. A better approach would be to combine the VERSION string and PROFILE boolean into a single string and then check for changes in this string. I might do this if I still have time after completing the other tasks.
+        - If I have time at the end, I could also trim the whitespace so then an empty space in the app.config file won't break the workflow.
