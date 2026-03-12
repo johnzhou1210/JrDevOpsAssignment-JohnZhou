@@ -45,11 +45,11 @@ jobs:
       # CLI call to simulated build process
       - name: Run Build
         run: |
-          PROFILE_FLAG=""
           if [[ "$PROFILE" == "true" ]]; then
-            PROFILE_FLAG="--profile"
+            ./build.sh --platform Android --project-name "${APP_NAME}" --version "${APP_VERSION}" --profile
+          else
+            ./build.sh --platform Android --project-name "${APP_NAME}" --version "${APP_VERSION}"
           fi
-          ./build.sh --platform Android --project-name "${APP_NAME}" --version "${APP_VERSION}" "${PROFILE_FLAG}"
           echo "Build process completed."
 
       # CLI call to simulated upload process
