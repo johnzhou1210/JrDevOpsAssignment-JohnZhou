@@ -21,6 +21,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          # Fetch full history to access previous commits for app.config
+          fetch-depth: 0
 
       # Load app name and version data from ../app.config
       - name: Load app configuration
