@@ -29,6 +29,7 @@ jobs:
           source ../app.config
           echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
           echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
+          echo "Loaded app configuration: Name=${APP_NAME}, Version=${APP_VERSION}"
 
       # CLI call to make sure the build and upload scripts are executable
       - name: Make scripts executable
@@ -40,7 +41,7 @@ jobs:
       # CLI call to simulated build process
       - name: Run Build
         run: |
-          ./build.sh --platform Android --project-name ${APP_NAME} --version ${APP_VERSION}"
+          ./build.sh --platform Android --project-name ${APP_NAME} --version ${APP_VERSION}
           echo "Build process completed."
 
       # CLI call to simulated upload process
