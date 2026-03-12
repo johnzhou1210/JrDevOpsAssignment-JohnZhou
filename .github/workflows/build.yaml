@@ -33,7 +33,8 @@ jobs:
           echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
           echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
           echo "PROFILE=${PROFILE}" >> $GITHUB_ENV
-          echo "Loaded app configuration: Name=${APP_NAME}, Version=${APP_VERSION}, Profile=${PROFILE}"
+          echo "PLATFORM=${PLATFORM}" >> $GITHUB_ENV
+          echo "Loaded app configuration: Name=${APP_NAME}, Version=${APP_VERSION}, Profile=${PROFILE}, Platform=${PLATFORM}"
 
       # CLI call to make sure the build and upload scripts are executable
       - name: Make scripts executable
@@ -46,9 +47,9 @@ jobs:
       - name: Run Build
         run: |
           if [[ "$PROFILE" == "true" ]]; then
-            ./build.sh --platform Android --project-name "${APP_NAME}" --version "${APP_VERSION}" --profile
+            ./build.sh --platform "${PLATFORM}" --project-name "${APP_NAME}" --version "${APP_VERSION}" --profile
           else
-            ./build.sh --platform Android --project-name "${APP_NAME}" --version "${APP_VERSION}"
+            ./build.sh --platform "${PLATFORM}" --project-name "${APP_NAME}" --version "${APP_VERSION}"
           fi
           echo "Build process completed."
 
@@ -76,8 +77,11 @@ jobs:
 
           echo "Version/Profile has changed, proceeding with upload."
           # Use of AI to recall for loop syntax
-          for file in ./build/Android/*; do
+          for file in ./build/${PLATFORM}/*; do
             echo "Uploading file: $file"
-            ./upload.sh android "$file"
+            if [[ "$PLATFORM" == "iOS" ]]; then
+              ./upload.sh ios "$file"
+            elif [[ "$PLATFORM" == "Android" ]]; then
+              ./upload.sh android "$file"
           done
           echo "Upload process completed for all artifacts."

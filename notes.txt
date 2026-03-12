@@ -122,3 +122,8 @@ Task #5
     2. One dilemma from this task was to upload or not upload if the PROFILE variable in app.config changes value. For simplicity's sake, I decided to only skip uploading if both VERSION and PROFILE are unchanged from the last commit.
         - This approach is simple, but I can see how this is unscalable. A better approach would be to combine the VERSION string and PROFILE boolean into a single string and then check for changes in this string. I might do this if I still have time after completing the other tasks.
         - If I have time at the end, I could also trim the whitespace so then an empty space in the app.config file won't break the workflow.
+    3. Another issue I encountered was how passing in empty strings as flags can cause unexpected errors. A safer way to go about doing this is to just use if/else statements, which is also more readable.
+
+# Task 7
+    1. The task seems to want the pipeline to be able to build for both Android and iOS. I can add a PLATFORM variable inside app.config to specify the build platform, and then load this value into build.yaml when building.
+    
