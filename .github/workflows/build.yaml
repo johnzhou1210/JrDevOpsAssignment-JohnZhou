@@ -2,7 +2,11 @@ name: Run Build
 
 on:
   workflow_dispatch:
-
+    inputs:
+      force_upload:
+        description: "Force upload even if config has not changed. Expects true or false."
+        required: false
+        default: "false"
   push:
     # Use of AI for recall how to set up a push trigger for the main branch
     branches:
@@ -14,6 +18,7 @@ jobs:
     env:
       # Dummy Upload Token (upload will fail if empty)
       UPLOAD_TOKEN: "1234567890abcdef"
+      FORCE_UPLOAD: ${{ github.event.inputs.force_upload }}
     defaults:
       run:
         working-directory: ./cli
@@ -54,7 +59,6 @@ jobs:
           echo "Build process completed."
 
       # CLI call to simulated upload process
-      # Modify later with an if statement to adjust flags based on platform
       - name: Upload
         run: |
           # Only upload if current config file is different from previous config file
@@ -66,12 +70,12 @@ jobs:
           echo "Previous config: $PREV_CONFIG"
           echo "Current config: $CURR_CONFIG"
 
-          if [[ "$PREV_CONFIG" == "$CURR_CONFIG" ]]; then
+          if [[ "$PREV_CONFIG" == "$CURR_CONFIG" && "$FORCE_UPLOAD" == "false" ]]; then
             echo "Config file has not changed since last commit, skipping upload."
             exit 0
           fi
 
-          echo "Config file has changed since last commit, proceeding with upload."
+          echo "Proceeding to upload artifacts."
           # Use of AI to recall for loop syntax
           for file in ./build/${PLATFORM}/*; do
             echo "Uploading file: $file"
