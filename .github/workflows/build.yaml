@@ -2,11 +2,10 @@ name: Run Build
 
 on:
   workflow_dispatch:
-    inputs:
-      app_name:
-        description: "Name of the app to build"
-        required: true
-        default: "Untitled App"
+    # Use of AI for recall how to define inputs for workflow dispatch and to set up a push trigger for the main branch
+    push:
+      branches:
+        - main
 
 jobs:
   build:
@@ -22,6 +21,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Load app name and version data from ../app.config
+      - name: Load app configuration
+        # Use of AI to recall how to set environment variables from a file in a GitHub Actions workflow
+        run: |
+          source ../app.config
+          echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
+          echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
+
       # CLI call to make sure the build and upload scripts are executable
       - name: Make scripts executable
         run: |
@@ -32,12 +39,13 @@ jobs:
       # CLI call to simulated build process
       - name: Run Build
         run: |
-          ./build.sh --platform Android --project-name "${{ github.event.inputs.app_name }}"
+          ./build.sh --platform Android --project-name ${APP_NAME} --version ${APP_VERSION}"
           echo "Build process completed."
 
       # CLI call to simulated upload process
       # Modify later with an if statement to adjust flags based on platform
       - name: Upload
+        # Use of AI to recall for loop syntax
         run: |
           for file in ./build/Android/*; do
             echo "Uploading file: $file"

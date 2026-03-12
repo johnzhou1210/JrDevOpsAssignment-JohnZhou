@@ -97,3 +97,9 @@ Task #3
 Task #4
     1. To allow for custom names, I can either create an environment variable in the .yaml script, or take in an app name as an input before starting the workflow.
         - I decided to choose the latter option because I thought it would be more flexible.
+
+
+Task #5
+    1. To version the application, I was thinking of just passing in an input to the workflow to take in a version string. However, since Task #5 wants me to only run the workflow upon pushing to main, I can no longer use workflow inputs for app name and version.
+        - Instead of passing app name and version via manually running the workflow, I can create a file that the .yaml script can read from to build with a custom name and version.
+        - I created an app.config file in repo's root which contains information about the app's name and version. By doing this, the .yaml script will be able to automatically take in the inputs app name and version upon building.
