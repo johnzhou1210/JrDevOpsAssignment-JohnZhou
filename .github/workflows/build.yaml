@@ -32,9 +32,9 @@ jobs:
       # CLI call to simulated upload process
       # Modify later with an if statement to adjust flags based on platform
       - name: Upload
-        run: |
-        echo "Current directory:"
-        pwd
-        echo "Directory contents:"
-        ls -R
+          run: |
+          echo "Current directory:"
+          pwd
+          echo "Directory contents:"
+          ls -R
           ./upload.sh android "build/Android"
