@@ -108,3 +108,5 @@ Task #5
             APP_NAME="A Test App" 
             ${APP_NAME} -> 3 arguments
             "${APP_NAME}" -> 1 argument
+    3. Since this task suggested that the build should not always be deployed/uploaded after a build, my first instinct was to check on the CDN if the version exists there. However, since that isn't an option for this assignment since everything is simulated,
+        I could instead only upload if the app version in the latest commit is newer than the app version in the previous commit.
