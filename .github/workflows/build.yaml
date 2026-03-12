@@ -85,7 +85,7 @@ jobs:
             done
           elif [[ "$PLATFORM" == "iOS" ]]; then
             echo "Uploading iOS artifacts..."
-            for file in ./build/${PLATFORM}/* ./build/${PLATFORM}/Assets/* 2>/dev/null; do
+            for file in ./build/${PLATFORM}/* ./build/${PLATFORM}/Assets/*; do
               [[ -f "$file" ]] || continue
               echo "Uploading file: $file"
               ./upload.sh ios "$file"
