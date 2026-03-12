@@ -2,10 +2,11 @@ name: Run Build
 
 on:
   workflow_dispatch:
-    # Use of AI for recall how to define inputs for workflow dispatch and to set up a push trigger for the main branch
-    push:
-      branches:
-        - main
+
+  push:
+    # Use of AI for recall how to set up a push trigger for the main branch
+    branches:
+      - main
 
 jobs:
   build:
