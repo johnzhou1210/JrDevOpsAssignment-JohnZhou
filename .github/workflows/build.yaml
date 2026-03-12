@@ -61,6 +61,9 @@ jobs:
       # CLI call to simulated upload process
       - name: Upload
         run: |
+          # If FORCE_UPLOAD is not set because workflow ran automatically, default it to false.
+          FORCE_UPLOAD="${FORCE_UPLOAD:-false}"
+
           # Only upload if current config file is different from previous config file
           # AI assistance used to determine how to extract previous contents from app.config from git history
           # PREV_CONFIG will be an empty string if there is no previous config (first commit), so we will treat that as a config change and proceed with upload
