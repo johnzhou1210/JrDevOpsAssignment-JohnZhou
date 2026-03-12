@@ -74,7 +74,7 @@ jobs:
             exit 0
           fi
 
-          echo "Version has changed, proceeding with upload."
+          echo "Version/Profile has changed, proceeding with upload."
           # Use of AI to recall for loop syntax
           for file in ./build/Android/*; do
             echo "Uploading file: $file"
