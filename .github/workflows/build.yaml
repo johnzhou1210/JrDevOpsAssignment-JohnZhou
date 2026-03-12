@@ -39,4 +39,4 @@ jobs:
             echo "Uploading file: $file"
             ./upload.sh android "$file"
           done
-          echo "Upload process completed."
+          echo "Upload process completed for all artifacts."
