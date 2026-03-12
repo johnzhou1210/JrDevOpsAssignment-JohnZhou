@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Dummy Upload Token (upload will fail if empty)
+      UPLOAD_TOKEN: "1234567890abcdef"
     defaults:
       run:
         working-directory: ./cli

@@ -87,4 +87,7 @@ Task #3
                     if Android, artifact path is /build/Android
                     if iOS, artifact path is /build/iOS
 
-                D. According to upload.sh, we need to provide an UPLOAD_TOKEN in the environment.
+                    For Android, the line to upload will be:
+                        ./upload.sh android "build/Android"
+
+                D. According to upload.sh, we need to provide an UPLOAD_TOKEN in the environment. I declared an UPLOAD_TOKEN environment variable in the build.yaml script for use in upload.sh.
