@@ -47,8 +47,24 @@ jobs:
       # CLI call to simulated upload process
       # Modify later with an if statement to adjust flags based on platform
       - name: Upload
-        # Use of AI to recall for loop syntax
         run: |
+          # Only upload if current version is newer than previous version
+          # AI assistance used to determine how to extract previous version from app.config from git history
+          # Gets previous commit, looks at app.config, finds line with APP_VERSION, and extracts the second field when split by double quotes
+          # This should contain the verison number (example: 0.1.2)
+          # PREV_VERSION will be an empty string if there is no previous version (first commit), so we will treat that as a version change and proceed with upload
+
+          PREV_VERSION=$(git show HEAD~1:app.config 2>/dev/null | grep APP_VERSION | cut -d '"' -f2 || echo "")
+          echo "Previous version: $PREV_VERSION"
+          echo "Current version: $APP_VERSION"
+
+          if [[ "$APP_VERSION" == "$PREV_VERSION" ]]; then
+            echo "Version has not changed, skipping upload."
+            exit 0
+          fi
+
+          echo "Version has changed, proceeding with upload."
+          # Use of AI to recall for loop syntax
           for file in ./build/Android/*; do
             echo "Uploading file: $file"
             ./upload.sh android "$file"
