@@ -76,7 +76,7 @@ jobs:
           fi
 
           echo "Proceeding to upload artifacts."
-          # Use of AI to recall for loop syntax
+          # Use of AI to recall bash for loop syntax
           if [[ "$PLATFORM" == "Android" ]]; then
             echo "Uploading Android artifacts..."
             for file in ./build/${PLATFORM}/*; do
