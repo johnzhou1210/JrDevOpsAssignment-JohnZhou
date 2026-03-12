@@ -22,12 +22,14 @@ jobs:
         run: |
           chmod +x build.sh
           chmod +x upload.sh
+          echo "Scripts are now executable."
 
       # CLI call to simulated build process
       - name: Run Build
         run: |
           appName="Test App"
           ./build.sh --platform Android --project-name "$appName"
+          echo "Build process completed."
 
       # CLI call to simulated upload process
       # Modify later with an if statement to adjust flags based on platform
@@ -37,3 +39,4 @@ jobs:
             echo "Uploading file: $file"
             ./upload.sh android "$file"
           done
+          echo "Upload process completed."
