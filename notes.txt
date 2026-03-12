@@ -103,3 +103,8 @@ Task #5
     1. To version the application, I was thinking of just passing in an input to the workflow to take in a version string. However, since Task #5 wants me to only run the workflow upon pushing to main, I can no longer use workflow inputs for app name and version.
         - Instead of passing app name and version via manually running the workflow, I can create a file that the .yaml script can read from to build with a custom name and version.
         - I created an app.config file in repo's root which contains information about the app's name and version. By doing this, the .yaml script will be able to automatically take in the inputs app name and version upon building.
+    2. One issue I encountered was with a syntax gotcha when there are empty spaces in a string. For empty spaces, wrapping the variable in double quotation marks treats the variable as a single argument instead of two.
+        - Example: 
+            APP_NAME="A Test App" 
+            ${APP_NAME} -> 3 arguments
+            "${APP_NAME}" -> 1 argument
