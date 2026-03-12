@@ -127,7 +127,7 @@ Task #5
 # Task 7
     1. The task seems to want the pipeline to be able to build for both Android and iOS. I can add a PLATFORM variable inside app.config to specify the build platform, and then load this value into build.yaml when building.
     2. At this point, the conditions for uploading artifacts isn't scaling very well. Maybe a better way is to check for any changes within the app.config file instead of specific fields.
-
+    3. Upon attempting to add support for iOS, my current approach of iterating through a directory falls apart when I try to upload a directory. I also notice how iOS builds have an Assets folder while Android builds do not. I need to change my iteration method for iOS builds to include another directory.
 
 
 # Shortcomings of my implementation

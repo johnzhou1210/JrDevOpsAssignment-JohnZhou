@@ -77,12 +77,21 @@ jobs:
 
           echo "Proceeding to upload artifacts."
           # Use of AI to recall for loop syntax
-          for file in ./build/${PLATFORM}/*; do
-            echo "Uploading file: $file"
-            if [[ "$PLATFORM" == "iOS" ]]; then
-              ./upload.sh ios "$file"
-            elif [[ "$PLATFORM" == "Android" ]]; then
+          if [[ "$PLATFORM" == "Android" ]]; then
+            echo "Uploading Android artifacts..."
+            for file in ./build/${PLATFORM}/*; do
+              echo "Uploading file: $file"
               ./upload.sh android "$file"
-            fi
-          done
+            done
+          elif [[ "$PLATFORM" == "iOS" ]]; then
+            echo "Uploading iOS artifacts..."
+            for file in ./build/${PLATFORM}/* ./build/${PLATFORM}/Assets/* 2>/dev/null; do
+              [[ -f "$file" ]] || continue
+              echo "Uploading file: $file"
+              ./upload.sh ios "$file"
+            done
+          else
+            echo "Invalid platform specified: $PLATFORM. Expected 'iOS' or 'Android'."
+            exit 1
+          fi
           echo "Upload process completed for all artifacts."
