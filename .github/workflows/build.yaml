@@ -48,7 +48,7 @@ jobs:
       # Modify later with an if statement to adjust flags based on platform
       - name: Upload
         run: |
-          # Only upload if current version is newer than previous version
+          # Only upload if current version is different from previous version
           # AI assistance used to determine how to extract previous version from app.config from git history
           # Gets previous commit, looks at app.config, finds line with APP_VERSION, and extracts the second field when split by double quotes
           # This should contain the verison number (example: 0.1.2)
