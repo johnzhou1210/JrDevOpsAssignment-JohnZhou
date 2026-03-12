@@ -91,3 +91,5 @@ Task #3
                         ./upload.sh android "build/Android"
 
                 D. According to upload.sh, we need to provide an UPLOAD_TOKEN in the environment. I declared an UPLOAD_TOKEN environment variable in the build.yaml script for use in upload.sh.
+    5. It seems like there was a mistake with the artifact path in the upload step. I used ls for testing to check the contents of the pwd and it looks like I was missing ./ before build/Android.
+        Updated upload line: ./upload.sh android "./build/Android"

@@ -37,4 +37,4 @@ jobs:
           pwd
           echo "Directory contents:"
           ls -R
-          ./upload.sh android "build/Android"
+          ./upload.sh android "./build/Android"
