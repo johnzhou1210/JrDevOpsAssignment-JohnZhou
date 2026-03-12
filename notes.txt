@@ -93,3 +93,7 @@ Task #3
                 D. According to upload.sh, we need to provide an UPLOAD_TOKEN in the environment. I declared an UPLOAD_TOKEN environment variable in the build.yaml script for use in upload.sh.
     5.  One issue with the current upload step is that upload.sh expects the artifact path to be a file, so I'm guessing that each file produced (apk, ipa, dat, asset, etc.) is considered a build artifact.
         In that case, I can loop through each file within build/Android and upload them individually.
+
+Task #4
+    1. To allow for custom names, I can either create an environment variable in the .yaml script, or take in an app name as an input before starting the workflow.
+        - I decided to choose the latter option because I thought it would be more flexible.
