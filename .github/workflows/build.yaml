@@ -44,6 +44,12 @@ jobs:
           ./build.sh --platform Android --project-name "${APP_NAME}" --version "${APP_VERSION}"
           echo "Build process completed."
 
+      # Debug step to show previous commit and app.config content for troubleshooting
+      - name: Debug previous commit file
+        run: |
+          git log --oneline -5
+          git show HEAD~1:app.config || echo "Previous commit file not found"
+
       # CLI call to simulated upload process
       # Modify later with an if statement to adjust flags based on platform
       - name: Upload

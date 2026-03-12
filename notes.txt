@@ -113,4 +113,4 @@ Task #5
     4. Since this task suggested that the build should not always be deployed/uploaded after a build, my first instinct was to check on the CDN if the version exists there. However, since that isn't an option for this assignment since everything is simulated,
         One other approach is to only upload the artifacts if the app version in the latest commit is newer than the app version in the previous commit. However, for simplicity's sake, I decided to just use a string comparison for version checking, and only upload if
         the previous commit's app version is different from the current's app version.
-        - During this step, I encountered an issue where the previous version was defaulting to an empty string. 
+        - During this step, I encountered an issue where the previous version was defaulting to an empty string. I used AI assistance to help me diagnose the issue.
