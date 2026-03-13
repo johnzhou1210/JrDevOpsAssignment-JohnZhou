@@ -1,4 +1,4 @@
-Issues encountered:
+Project Notes
 
 Task #3
     1. After first workflow run:
@@ -122,13 +122,21 @@ Task #5
     2. One dilemma from this task was to upload or not upload if the PROFILE variable in app.config changes value. For simplicity's sake, I decided to only skip uploading if both VERSION and PROFILE are unchanged from the last commit.
         - This approach is simple, but I can see how this is unscalable. A better approach would be to combine the VERSION string and PROFILE boolean into a single string and then check for changes in this string. I might do this if I still have time after completing the other tasks.
         - If I have time at the end, I could also trim the whitespace so then an empty space in the app.config file won't break the workflow.
-    3. Another issue I encountered was how passing in empty strings as flags can cause unexpected errors. A safer way to go about doing this is to just use if/else statements, which is also more readable.
+    3. Another issue I encountered was how passing in empty strings as flags can potentially cause unexpected errors. A safer way to go about doing this is to just use if/else statements, which is also more readable.
 
 # Task 7
     1. The task seems to want the pipeline to be able to build for both Android and iOS. I can add a PLATFORM variable inside app.config to specify the build platform, and then load this value into build.yaml when building.
     2. At this point, the conditions for uploading artifacts isn't scaling very well. Maybe a better way is to check for any changes within the app.config file instead of specific fields.
     3. Upon attempting to add support for iOS, my current approach of iterating through a directory falls apart when I try to upload a directory. I also notice how iOS builds have an Assets folder while Android builds do not. I need to change my iteration method for iOS builds to include another directory.
 
+# Task 8
+    After finishing Tasks #1-7, I made adjustments to logging so that the output from GitHub Actions is easier to read.
+    Features to add if I had more time:
+        1. Allow building more than one build at a time
+        2. If build time is very lengthy, I would try to look into caching
+        3. Make variable extraction from app.config more robust
+        3. Add more early validation checks within build.yaml to catch typos and invalid config data.
+    
 
 # Shortcomings of my implementation
     1. If a build fails before the upload script runs, the next commit to the main branch will not upload any built artifacts if the config file didn't change since last commit. As a result, I added an option to force upload regardless of config changes, but this can only be done manually.

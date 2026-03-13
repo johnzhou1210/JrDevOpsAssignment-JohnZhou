@@ -35,32 +35,39 @@ jobs:
         # Use of AI to recall how to set environment variables from a file in a GitHub Actions workflow
         run: |
           source ../app.config
+          echo "==================== START LOADING APP CONFIGURATION ===================="
           echo "APP_NAME=${APP_NAME}" >> $GITHUB_ENV
           echo "APP_VERSION=${APP_VERSION}" >> $GITHUB_ENV
           echo "PROFILE=${PROFILE}" >> $GITHUB_ENV
           echo "PLATFORM=${PLATFORM}" >> $GITHUB_ENV
           echo "Loaded app configuration: Name=${APP_NAME}, Version=${APP_VERSION}, Profile=${PROFILE}, Platform=${PLATFORM}"
+          echo "==================== END LOADING APP CONFIGURATION ===================="
 
       # CLI call to make sure the build and upload scripts are executable
       - name: Make scripts executable
         run: |
+          echo "==================== START CHANGING EXECUTABLE PERMISSIONS FOR .sh SCRIPTS ===================="
           chmod +x build.sh
           chmod +x upload.sh
-          echo "Scripts are now executable."
+          echo ".sh scripts should now be executable."
+          echo "==================== END CHANGING EXECUTABLE PERMISSIONS FOR .sh SCRIPTS ===================="
 
       # CLI call to simulated build process
       - name: Run Build
         run: |
+          echo "==================== START RUNNING BUILD STEP ===================="
           if [[ "$PROFILE" == "true" ]]; then
             ./build.sh --platform "${PLATFORM}" --project-name "${APP_NAME}" --version "${APP_VERSION}" --profile
           else
             ./build.sh --platform "${PLATFORM}" --project-name "${APP_NAME}" --version "${APP_VERSION}"
           fi
           echo "Build process completed."
+          echo "==================== END RUNNING BUILD STEP ===================="
 
       # CLI call to simulated upload process
       - name: Upload
         run: |
+          echo "==================== START RUNNING UPLOAD STEP ===================="
           # If FORCE_UPLOAD is not set because workflow ran automatically, default it to false.
           FORCE_UPLOAD="${FORCE_UPLOAD:-false}"
 
@@ -70,11 +77,16 @@ jobs:
 
           PREV_CONFIG=$(git show HEAD~1:app.config 2>/dev/null || echo "")
           CURR_CONFIG=$(cat ../app.config)
-          echo "Previous config: $PREV_CONFIG"
-          echo "Current config: $CURR_CONFIG"
+          echo "======= PREVIOUS CONFIG PREVIEW START ======="
+          echo "$PREV_CONFIG"
+          echo "======= PREVIOUS CONFIG PREVIEW END ======="
+          echo "======= CURRENT CONFIG PREVIEW START ======="
+          echo "$CURR_CONFIG"
+          echo "======= CURRENT CONFIG PREVIEW END ======="
 
           if [[ "$PREV_CONFIG" == "$CURR_CONFIG" && "$FORCE_UPLOAD" == "false" ]]; then
             echo "Config file has not changed since last commit, skipping upload."
+            echo "==================== END RUNNING UPLOAD STEP ===================="
             exit 0
           fi
 
@@ -98,3 +110,4 @@ jobs:
             exit 1
           fi
           echo "Upload process completed for all artifacts."
+          echo "==================== END RUNNING UPLOAD STEP ===================="
