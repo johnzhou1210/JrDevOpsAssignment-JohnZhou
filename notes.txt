@@ -133,7 +133,7 @@ Task #5
     After finishing Tasks #1-7, I made adjustments to logging so that the output from GitHub Actions is easier to read.
     Features to add if I had more time:
         1. Allow building more than one build at a time
-        2. If build time is very lengthy, I would try to look into caching
+        2. If build time is very lengthy, I would try to look into caching. If app.config file didn't change at all, end the workflow early (even before the build process).
         3. Make variable extraction from app.config more robust
         3. Add more early validation checks within build.yaml to catch typos and invalid config data.
     
